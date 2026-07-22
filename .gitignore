@@ -1,0 +1,63 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+*.env
+.streamlit/secrets.toml
+
+# Databases and Vector DB storage
+data/chroma_db/
+chroma_db/
+*.db
+*.sqlite3
+*.sqlite
+
+# Temporary / uploaded audio and media files
+*.wav
+*.mp3
+*.m4a
+*.ogg
+*.flac
+
+# Local AI models & cache
+models/
+.cache/
+huggingface/
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-workspace
+
+# Operating System files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs and temporary files
+*.log
+tmp/
+temp/
+
+# Testing and Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/

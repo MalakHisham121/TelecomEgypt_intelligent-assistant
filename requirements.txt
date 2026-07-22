@@ -1,0 +1,24 @@
+# User Interface
+streamlit
+
+# Core RAG & LLM Framework
+langchain
+langchain-community
+langchain-chroma
+langchain-ollama
+chromadb
+sentence-transformers
+transformers
+
+# Audio Processing (ASR & TTS)
+faster-whisper
+piper-tts
+
+# Document Parsers & OCR
+pypdf
+python-docx
+pytesseract
+pillow
+
+# Utilities
+python-dotenv
