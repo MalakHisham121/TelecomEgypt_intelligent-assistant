@@ -11,8 +11,8 @@ def run_tests():
     # 1. Test Offline TTS
     tts = OfflineTTS()
     
-    #test_text = "أهلاً بك في شركة المصرية للاتصالات. كيف يمكنني مساعدتك اليوم؟"
-    test_text = "ضحى وصفاو أحمد أحلى أخوات في الدنيا "
+    test_text = "أهلاً بك في شركة المصرية للاتصالات. كيف يمكنني مساعدتك اليوم؟"
+    #test_text = "ضحى وصفاو أحمد أحلى أخوات في الدنيا "
 
     output_audio = "test_output.wav"
     

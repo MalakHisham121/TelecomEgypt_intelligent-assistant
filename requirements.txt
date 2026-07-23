@@ -4,6 +4,7 @@ streamlit
 # Core RAG & LLM Framework
 langchain
 langchain-community
+langchain-huggingface
 langchain-chroma
 langchain-ollama
 chromadb
@@ -22,3 +23,6 @@ pillow
 
 # Utilities
 python-dotenv
+beautifulsoup4
+requests
+pdf2image
