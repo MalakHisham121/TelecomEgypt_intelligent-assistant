@@ -6,7 +6,7 @@ def test_search(query: str):
     embeddings = HuggingFaceEmbeddings(
         model_name="BAAI/bge-m3",
         model_kwargs={'device': 'cpu'},
-        encode_kwargs={'normalize_embeddings': True}
+        encode_kwargs={'normalize_embeddings': True} 
     )
 
     print("Connecting to local ChromaDB...")
