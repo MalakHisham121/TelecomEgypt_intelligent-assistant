@@ -21,7 +21,7 @@ class RAGPipeline:
         Connects embeddings, vector database, and the local LLM.
         """
         self.embeddings = HuggingFaceEmbeddings(
-            model_name="BAAI/bge-m3",
+            model_name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
             model_kwargs={'device': 'cpu'},
             encode_kwargs={'normalize_embeddings': True}
         )
@@ -41,26 +41,35 @@ class RAGPipeline:
             temperature=0.1,
         )
 
-        # --- LangChain Setup using LCEL (LangChain Expression Language) ---
-        # 1. We construct a chain that first retrieves context, formats it, 
-        #    and injects it along with the user input into the prompt.
+        # We construct a chain that first retrieves context, formats it, 
+        # and injects it along with the user input and chat history into the prompt.
         self.rag_chain = (
-            {"context": self.retriever | format_docs, "input": RunnablePassthrough()}
+            {
+                "context": lambda x: format_docs(self.retriever.invoke(x["input"])),
+                "input": lambda x: x["input"],
+                "chat_history": lambda x: x["chat_history"]
+            }
             | qa_prompt
             | self.llm
             | StrOutputParser()
         )
 
-    def query(self, user_input: str) -> dict:
+    def query(self, user_input: str, chat_history: list = None) -> dict:
         """
         Executes a query through the RAG pipeline.
         Returns a dictionary with 'answer' and 'context' (the retrieved documents).
         """
+        if chat_history is None:
+            chat_history = []
+            
         # We fetch the docs manually to return them in the result for the UI
         docs = self.retriever.invoke(user_input)
         
-        # We invoke the full chain to get the answer
-        answer = self.rag_chain.invoke(user_input)
+        # We invoke the full chain to get the answer, passing history
+        answer = self.rag_chain.invoke({
+            "input": user_input,
+            "chat_history": chat_history
+        })
         
         return {
             "answer": answer,

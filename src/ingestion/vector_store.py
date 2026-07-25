@@ -8,9 +8,9 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 logger = logging.getLogger(__name__)
 
-# BAAI/bge-m3 is a state-of-the-art multilingual embedding model
-# Note: It requires downloading a large model (~2.2GB)
-EMBEDDING_MODEL_NAME = "BAAI/bge-m3"
+# Using a smaller multilingual model to prevent OOM kills
+# Note: It requires downloading a model (~470MB)
+EMBEDDING_MODEL_NAME = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
 
 def get_embeddings_model() -> HuggingFaceEmbeddings:
     """

@@ -1,9 +1,9 @@
-from langchain_core.prompts import ChatPromptTemplate, PromptTemplate
+from langchain_core.prompts import ChatPromptTemplate, PromptTemplate, MessagesPlaceholder
 
 # 1. We define the System Prompt to enforce our 3 strict rules.
 # The {context} placeholder will be injected by LangChain's document chain.
 RAG_SYSTEM_PROMPT = """You are a helpful and intelligent assistant for Telecom Egypt (WE).
-Your primary task is to answer the user's question based on the provided context.
+Your primary task is to answer the user's question based on the provided context and the conversation history.
 
 Follow these STRICT rules:
 1. ONLY use the provided context to answer the question. If the answer is not in the context, say "I do not have enough information to answer that based on the provided context." Do not use your own external knowledge.
@@ -15,9 +15,10 @@ Context:
 """
 
 # 2. We create the main ChatPromptTemplate.
-# We use {input} for the user's question because LangChain's create_retrieval_chain expects it.
+# We include the chat_history so the model remembers previous turns.
 qa_prompt = ChatPromptTemplate.from_messages([
     ("system", RAG_SYSTEM_PROMPT),
+    MessagesPlaceholder(variable_name="chat_history"),
     ("human", "{input}")
 ])
 

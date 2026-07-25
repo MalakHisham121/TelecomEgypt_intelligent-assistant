@@ -26,3 +26,6 @@ python-dotenv
 beautifulsoup4
 requests
 pdf2image
+
+# Computer Vision
+torchvision
