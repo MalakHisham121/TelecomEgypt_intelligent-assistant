@@ -89,7 +89,7 @@ graph TD
 
 ## How to Run the Application
 
-You can test the application instantly via the live cloud deployment, run it as a self-contained notebook in Google Colab, or deploy it locally on your machine.
+You can access the live cloud deployment directly, run the self-contained notebook (`TelecomEgypt_Assistant.ipynb`) in Google Colab/Jupyter (where package installations are handled inside the notebook cells), or execute the standalone Python script.
 
 ### Option A: Live Demo (Hugging Face Spaces)
 
@@ -99,23 +99,23 @@ The fastest way to experience the assistant is through the live web deployment. 
 
 ---
 
-### Option B: Self-Contained Cloud Notebook
+### Option B: Running the Notebook in Google Colab (Zero Setup)
 
-The notebook version (`TelecomEgypt_Assistant.ipynb`) is completely self-contained, including all web scrapers, vector database building steps, and an inline Gradio UI.
+Running the notebook in Google Colab requires no manual installation steps. All dependencies are pre-configured in the notebook cells.
 
-1. Open `TelecomEgypt_Assistant.ipynb` in **[Google Colab](https://colab.research.google.com/)** or **Kaggle**.
-2. Run **Section 1** to install system dependencies (`langchain`, `chromadb`, `edge-tts`, `groq`, `gradio`, etc.).
+1. Open `TelecomEgypt_Assistant.ipynb` in **[Google Colab](https://colab.research.google.com/)**.
+2. Run **Section 1** to execute the built-in package installation cell.
 3. Run **Section 2** and securely paste your free `GROQ_API_KEY` when prompted.
-4. Execute sections sequentially from top to bottom. The pipeline will automatically scrape WE FAQ pages and build your local Chroma vector store.
-5. In **Section 12**, the Gradio web interface will launch inline inside the notebook alongside a temporary public share link (`https://xxxx.gradio.live`)!
+4. Execute remaining cells sequentially. The notebook automatically scrapes WE FAQ pages and builds the local Chroma vector store.
+5. In **Section 12**, the Gradio web interface launches inline directly inside the notebook alongside a temporary public share link (`https://xxxx.gradio.live`)!
 
 ---
 
-### Option C: Local Machine Deployment
+### Option C: Running the Notebook Locally (Jupyter Notebook / Lab)
 
-To run the script locally on your machine:
+If executing the notebook locally, package installation is handled by running the notebook's first cell.
 
-1. **Clone the repository & enter the directory:**
+1. **Clone the repository and enter the directory:**
 ```bash
 git clone <your-repo-url>
 cd TelecomEgypt_intelligent-assistant
@@ -131,28 +131,20 @@ source venv/bin/activate  # On Windows use: venv\Scripts\activate
 ```
 
 
-3. **Install system audio utilities & Python dependencies:**
-Ensure `ffmpeg` is installed on your OS, then run:
+3. **Launch Jupyter:**
 ```bash
-pip install --upgrade pip
-pip install gradio langchain langchain-community langchain-huggingface langchain-chroma chromadb sentence-transformers transformers edge-tts pypdf python-docx docx2txt pillow beautifulsoup4 requests langchain-groq groq
+pip install jupyter
+jupyter notebook
 
 ```
 
 
-4. **Set your Groq API Key:**
-Obtain a free API key from the [Groq Console](https://console.groq.com/) and set it in your environment:
-```bash
-export GROQ_API_KEY="your_actual_api_key_here"  # On Windows CMD use: set GROQ_API_KEY="..."
-
-```
-
-
-5. **Start the application:**
-```bash
-python app.py
-
-```
+4. **Execute the Notebook:**
+* Open `TelecomEgypt_Assistant.ipynb`.
+* Run **Section 1** to automatically install all required packages into your active environment.
+* Enter your `GROQ_API_KEY` in **Section 2**.
+* Run all remaining cells sequentially. Section 12 will launch the interactive Gradio UI locally in your browser!
 
 
-Open your browser to `http://127.0.0.1:7860` to record voice notes, attach documents, and chat with the assistant!
+
+---
