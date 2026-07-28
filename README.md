@@ -15,52 +15,48 @@ The following diagram illustrates the data flow, multimodal document ingestion, 
 ```mermaid
 graph TD
     User([User])
-    
-    subgraph UI [Interactive Frontend]
+
+    subgraph UI [Frontend Interface]
         App[Gradio Web Interface<br/>State Management & RTL Support]
     end
-    
-    subgraph Voice & Vision Engines
-        ASR[ASR Engine<br/>Groq Whisper-large-v3]
-        TTS[TTS Engine<br/>Edge-TTS Neural Voices]
-        OCR[Vision OCR<br/>Llama-3.2-90B-Vision]
-    end
-    
-    subgraph RAG Pipeline
-        Query[Query & Context Processor]
-        LLM[LLM Engine<br/>Groq Llama-3.3-70B-Versatile]
-        Retriever[Vector Retriever<br/>Top-K Semantic Search]
-        
-        subgraph Knowledge Base
-            DocLoader[Multimodal Loaders<br/>PDF, DOCX, TXT, Web Scraper]
-            Chroma[ChromaDB<br/>MiniLM-L12 Embeddings]
-        end
+
+    subgraph Ingestion [Knowledge Base Setup]
+        Loaders[Multimodal Loaders<br/>Web Scraper, PDF, DOCX, TXT]
+        Chroma[(ChromaDB Vector Store<br/>MiniLM-L12 Embeddings)]
+        Loaders -->|"Embed Chunks"| Chroma
     end
 
-    %% Input Flow
-    User -- "Voice Audio" --> App
-    User -- "Text Query / Files" --> App
-    App -- "Audio Path" --> ASR
-    ASR -- "Transcribed Text" --> Query
-    App -- "Text / Active Doc State" --> Query
+    subgraph Processing [Multimodal Engines]
+        ASR[ASR: Whisper-large-v3]
+        OCR[Vision OCR: Llama-3.2-90B]
+    end
+
+    subgraph RAG [RAG & Generation Pipeline]
+        Retriever[Top-K Semantic Retriever]
+        LLM[LLM: Llama-3.3-70B-Versatile]
+        TTS[TTS: Edge-TTS Neural Voices]
+    end
+
+    %% Input Routing
+    User -->|"Audio / Images / Text"| App
+    App -->|"Voice Audio"| ASR
+    App -->|"Uploaded Images"| OCR
+    App -->|"Uploaded Docs"| Loaders
     
-    %% Ingestion Flow
-    DocLoader -- "Raw Text / Scraped Pages" --> Chroma
-    App -- "Uploaded Images" --> OCR
-    OCR -- "Extracted Text" --> DocLoader
+    %% Processing Routing
+    ASR -->|"Transcribed Text"| App
+    OCR -->|"Extracted Text"| Loaders
     
     %% Retrieval & Generation
-    Query -- "Search Query + Doc Context" --> Retriever
-    Retriever -- "Semantic Context" --> Chroma
-    Chroma -. "Relevant Knowledge Chunks" .-> Retriever
-    Retriever -- "Formatted Prompt + History" --> LLM
+    App -->|"Query + Doc Context + History"| Retriever
+    Chroma -.->|"Relevant FAQ Chunks"| Retriever
+    Retriever -->|"Formatted Prompt"| LLM
     
-    %% Output Flow
-    LLM -- "Streaming Text (<think> filtered)" --> App
-    LLM -- "Clean Text" --> TTS
-    TTS -- "Synthesized MP3 Audio" --> App
-    App -- "Voice Response & RTL Text" --> User
-
+    %% Output Routing
+    LLM -->|"Streaming Text (<think> filtered)"| App
+    LLM -->|"Clean Answer Text"| TTS
+    TTS -->|"Synthesized MP3 Audio"| App
+    App -->|"Voice Response & RTL Text"| User
 ```
 
 ---
